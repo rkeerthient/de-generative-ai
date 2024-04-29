@@ -1,0 +1,60 @@
+{
+  "name": "genai-demo",
+  "version": "0.0.0",
+  "description": "An example repository to help users get started with React development on Yext Pages",
+  "author": "sumo@yext.com",
+  "license": "BSD-3-Clause",
+  "type": "module",
+  "scripts": {
+    "dev": "pages dev",
+    "prod": "pages prod",
+    "clean": "rm -rf .artifact-output .yext/ dist/ localData sites-rendered-output",
+    "features": "pages generate features",
+    "build": "pages build"
+  },
+  "engines": {
+    "node": "^18.0.0 || >=20.2.0"
+  },
+  "dependencies": {
+    "@headlessui/react": "^1.7.19",
+    "@heroicons/react": "^2.1.3",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@yext/chat-headless-react": "^0.6.1",
+    "@yext/chat-ui-react": "^0.8.8",
+    "@yext/pages-components": "^1.0.0-rc.8",
+    "@yext/search-headless-react": "^2.4.0",
+    "@yext/search-ui-react": "^1.5.0",
+    "class-variance-authority": "^0.7.0",
+    "classnames": "^2.5.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "11.1.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.1.0",
+    "react-loading-icons": "^1.1.0",
+    "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.0",
+    "tailwind-merge": "^2.3.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "@tailwindcss/typography": "^0.5.13",
+    "@types/mapbox-gl": "^3.1.0",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@yext/pages": "1.0.0",
+    "autoprefixer": "^10.4.17",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.33.2",
+    "generate-license-file": "^3.0.1",
+    "postcss": "^8.4.35",
+    "prettier": "^3.2.5",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.3.3",
+    "vite": "^5.2.10"
+  }
+}

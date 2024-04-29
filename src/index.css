@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.centered-container {
+  @apply mx-auto px-2 md:px-6;
+}
+
+.section {
+  @apply mt-8 mb-16;
+}
+
+@layer utilities {
+  .animation-delay-200 {
+    animation-delay: 0.2s;
+  }
+  .animation-delay-400 {
+    animation-delay: 0.4s;
+  }
+}
+
+.circle {
+  @apply mx-1 h-3 w-3 rounded-full bg-gray-500;
+}
