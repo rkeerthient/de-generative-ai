@@ -122,7 +122,7 @@ function Inner() {
   );
 }
 
-export default function Home({ document }: TemplateProps) {
+export default function GenerativeAI({ document }: TemplateProps) {
   const { _site } = document;
   const { c_header, c_footer } = _site;
 
