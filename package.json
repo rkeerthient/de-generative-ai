@@ -10,7 +10,7 @@
     "prod": "pages prod",
     "clean": "rm -rf .artifact-output .yext/ dist/ localData sites-rendered-output",
     "features": "pages generate features",
-    "build": "pages build"
+    "build:local": "pages build"
   },
   "engines": {
     "node": "^18.0.0 || >=20.2.0"
