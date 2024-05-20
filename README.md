@@ -6,7 +6,7 @@
 - **Run the command `rm -rf .git` in your terminal to disconnect the local repository from my repo.**
 - Create a new site entity in your account with two fields:
   - header
-  - hooter
+  - footer
 - In your account create a new entity and upload the header image to header field and footer image to footer field and save it. Copy the newly created entity ID.
 - In the repo, open the `config.yaml` file and replace `entityId` value with this ID. It should be in last line.
 - Push the package to GitHub.
@@ -40,9 +40,3 @@
     ![Search Config](/docImages/search.png)
 
 - Click "Deploy Site" to complete the deployment.
-
-### Other Configuration
-
-- Most of the UI elements are stylable. open [index.css](/src/index.css) file to see the available options under _Customisations_.
-- It mostly follows the same way done in Jambo.
-- To have additional CTA, create **Tertiary CTA** and this will render 3rd CTA on Screen
