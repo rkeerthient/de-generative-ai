@@ -84,7 +84,11 @@ function Inner() {
 
   return (
     <div className="centered-container">
-      <SearchBar onSearch={handleSearch} placeholder="Ask a question..."  customCssClasses={{searchBarContainer:'my-4'}}/>
+      <SearchBar
+        onSearch={handleSearch}
+        placeholder="Ask a question..."
+        customCssClasses={{ searchBarContainer: "my-4" }}
+      />
       <section className={cn("flex flex-col gap-10", !hasSearched && "hidden")}>
         <AiAnswer />
         <SearchResultsSection />
@@ -122,7 +126,7 @@ function Inner() {
   );
 }
 
-export default function GenerativeAI({ document }: TemplateProps) {
+const GenerativeAI = ({ document }: TemplateProps) => {
   const { _site } = document;
   const { c_header, c_footer } = _site;
 
@@ -141,4 +145,6 @@ export default function GenerativeAI({ document }: TemplateProps) {
       </SearchHeadlessProvider>
     </>
   );
-}
+};
+
+export default GenerativeAI;
