@@ -6,6 +6,7 @@ import { useChatModeContext } from "../hooks";
 import { cn } from "../utils/cn";
 import MessageCard from "./cards/MessageCard";
 import { Bars } from "react-loading-icons";
+import FollowUpButton from "./FollowUpButton";
 
 export default function AiAnswer() {
   const messages = useChatState((s) => s.conversation.messages);
@@ -81,7 +82,12 @@ export default function AiAnswer() {
             id="chatbox"
           >
             {messages.slice(2).map((m, idx) => {
-              return <MessageCard message={m} idx={idx} key={m.responseId} />;
+              return (
+                <>
+                   <MessageCard message={m} idx={idx} key={m.responseId} />{" "}
+                  <FollowUpButton />
+                </>
+              );
             })}
 
             {isLoading && (

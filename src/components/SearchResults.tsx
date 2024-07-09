@@ -1,6 +1,6 @@
 const SearchResults = ({ results }: any) => {
   return (
-    <section className="flex flex-col gap-4 mb-8 h-screen">
+    <section className="flex flex-col gap-4 mb-8 h-screen centered-container">
       {results.map((result: any) => {
         return (
           <div

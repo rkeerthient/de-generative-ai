@@ -4,7 +4,7 @@ import {
   useChatActions,
   useChatState,
 } from "@yext/chat-headless-react";
-import { ChatInput } from "@yext/chat-ui-react";
+import { ChatInput, ChatPanel } from "@yext/chat-ui-react";
 import {
   GetHeadConfig,
   GetPath,
@@ -21,7 +21,7 @@ import {
 import { SearchBar, onSearchFunc } from "@yext/search-ui-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { BsSend } from "react-icons/bs";
+import { BsArrowLeft, BsSend } from "react-icons/bs";
 import AiAnswer from "../components/AiAnswer";
 import { Button } from "../components/Button";
 import { ChatModeContextProvider } from "../components/ChatModeContext";
@@ -87,53 +87,90 @@ function Inner() {
   };
 
   return (
-    <div className=" min-h-[90vh] overflow-scroll">
-      <div className="centered-container py-8">
-        <SearchBar
-          onSearch={handleSearch}
-          placeholder="Ask a question..."
-          customCssClasses={{ searchBarContainer: "my-4" }}
-        />
-      </div>
+    <div>
+      {!chatMode && (
+        <div className="centered-container py-8">
+          <SearchBar
+            onSearch={handleSearch}
+            placeholder="Ask a question..."
+            customCssClasses={{ searchBarContainer: "my-4" }}
+          />
+        </div>
+      )}
 
       <section className={cn("flex flex-col gap-10", !hasSearched && "hidden")}>
-        <AiAnswer />
-        <div className="centered-container">
-          <SearchResults
-            results={
-              results && results.flatMap((obj) => obj.results).slice(0, 9)
-            }
-          />
-          <AnimatePresence>
-            {chatMode && (
-              <motion.div
-                className="fixed bottom-0 left-0 flex w-full items-center justify-center gap-4 border-t bg-white px-4 py-8 drop-shadow-lg"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                exit={{ opacity: 0, y: 20 }}
+        {!chatMode && (
+          <>
+            <AiAnswer />
+            <SearchResults
+              results={
+                results && results.flatMap((obj) => obj.results).slice(0, 9)
+              }
+            />
+          </>
+        )}
+        <AnimatePresence>
+          {chatMode && (
+            <motion.div
+              className="fixed bottom-0 left-0 flex w-full items-center justify-center gap-4 border-t bg-white px-4 py-8 drop-shadow-lg"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              exit={{ opacity: 0, y: 20 }}
+            >
+              <Button
+                onClick={() => {
+                  chatActions.setMessages(messages.slice(0, 2));
+                  setChatMode(false);
+                  window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+                }}
               >
-                <Button
+                Reset
+              </Button>
+              <ChatInput
+                sendButtonIcon={<BsSend className="text-gray-900" />}
+                customCssClasses={{
+                  container: " w-full lg:w-1/2 resize-none",
+                  sendButton: "right-2 top-5",
+                }}
+                inputAutoFocus={true}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {chatMode && (
+            <motion.div
+              key="chat-panel"
+              initial={{ y: "100vh" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100vh" }}
+              transition={{ duration: 0.3 }}
+              className="flex w-full h-full absolute top-0 right-0 object-cover bg-white z-100"
+            >
+              <div className="w-full h-full shrink-0 relative">
+                <button
+                  className="z-50 absolute top-0 left-8 mt-4 mr-4 text-[#0a3366] bg-white shadow rounded-full px-4 py-2"
                   onClick={() => {
-                    chatActions.setMessages(messages.slice(0, 2));
                     setChatMode(false);
-                    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
                   }}
                 >
-                  Reset
-                </Button>
-                <ChatInput
-                  sendButtonIcon={<BsSend className="text-gray-900" />}
+                  <BsArrowLeft className="inline-block w-4 h-4 mr-2 my-auto mx-auto text-[#0a3366]" />
+                  Back to Search
+                </button>
+                <ChatPanel
                   customCssClasses={{
-                    container: " w-full lg:w-1/2 resize-none",
-                    sendButton: "right-2 top-5",
+                    container: "shadow-none my-0 w-full p-6",
+                    messageBubbleCssClasses: {
+                      bubble__user: "bg-none bg-[#0a3366]  p-4",
+                      bubble__bot: "bg-none bg-[#e3eefc]  zp-4",
+                    },
                   }}
-                  inputAutoFocus={true}
                 />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </section>
     </div>
   );

@@ -9,6 +9,7 @@ import { cn } from "../../utils/cn";
 import { HandThumbDownIcon, HandThumbUpIcon } from "@heroicons/react/20/solid";
 import { useCallback, useState } from "react";
 import { useChatModeContext } from "../../hooks";
+import FollowUpButton from "../FollowUpButton";
 
 interface MessageCardProps {
   message: Message;
@@ -88,6 +89,7 @@ const MessageCard = ({ message, idx }: MessageCardProps) => {
         <ReactMarkdown className="prose-sm w-full list-disc text-left">
           {message.text}
         </ReactMarkdown>
+        <FollowUpButton />
       </div>
     </li>
   );
