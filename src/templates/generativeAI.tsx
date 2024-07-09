@@ -67,7 +67,6 @@ function Inner() {
   const [results, setResults] = useState<VerticalResults[]>([]);
   const handleSearch: onSearchFunc = (searchEventData) => {
     const { query } = searchEventData;
-    console.log(`enmtrref om` + query);
     if (query) {
       setHasSearched(true);
       searchActions.setUniversalLimit(universalLimits);

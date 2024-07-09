@@ -1,6 +1,4 @@
 const SearchResults = ({ results }: any) => {
-  console.log(JSON.stringify(results));
-
   return (
     <section className="flex flex-col gap-4 mb-8 h-screen">
       {results.map((result: any) => {
