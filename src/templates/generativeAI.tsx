@@ -14,6 +14,7 @@ import {
 } from "@yext/pages";
 import {
   SearchHeadlessProvider,
+  VerticalResults,
   provideHeadless,
   useSearchActions,
 } from "@yext/search-headless-react";
@@ -21,21 +22,20 @@ import { SearchBar, onSearchFunc } from "@yext/search-ui-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { BsSend } from "react-icons/bs";
+import AiAnswer from "../components/AiAnswer";
 import { Button } from "../components/Button";
 import { ChatModeContextProvider } from "../components/ChatModeContext";
-import SearchResultsSection from "../components/SearchResultsSection";
+import SearchResults from "../components/SearchResults";
 import Footer from "../components/footer";
 import Header from "../components/header";
 import searchConfig from "../components/searchConfig";
 import { useChatModeContext } from "../hooks";
 import "../index.css";
 import { cn } from "../utils/cn";
-import AiAnswer from "../components/AiAnswer";
 
 const chatConfig: ChatHeadlessConfig = {
   apiKey: import.meta.env.YEXT_PUBLIC_CHAT_APIKEY,
   botId: import.meta.env.YEXT_PUBLIC_CHAT_BOTID,
-  saveToSessionStorage: false,
 };
 
 export const getPath: GetPath<TemplateProps> = () => {
@@ -64,14 +64,19 @@ function Inner() {
   const [hasSearched, setHasSearched] = useState(false);
   const { chatMode, setChatMode } = useChatModeContext();
   const messages = useChatState((s) => s.conversation.messages);
-
+  const [results, setResults] = useState<VerticalResults[]>([]);
   const handleSearch: onSearchFunc = (searchEventData) => {
-    setHasSearched(true);
     const { query } = searchEventData;
-    searchActions.setUniversalLimit(universalLimits);
-    searchActions.executeUniversalQuery();
-    chatActions.restartConversation();
-    chatActions.getNextMessage(query);
+    console.log(`enmtrref om` + query);
+    if (query) {
+      setHasSearched(true);
+      searchActions.setUniversalLimit(universalLimits);
+      searchActions
+        .executeUniversalQuery()
+        .then((res) => res && setResults(res.verticalResults));
+      chatActions.restartConversation();
+      chatActions.getNextMessage(query);
+    }
     const queryParams = new URLSearchParams(window.location.search);
 
     if (query) {
@@ -83,44 +88,53 @@ function Inner() {
   };
 
   return (
-    <div className="centered-container">
-      <SearchBar
-        onSearch={handleSearch}
-        placeholder="Ask a question..."
-        customCssClasses={{ searchBarContainer: "my-4" }}
-      />
+    <div className=" min-h-[90vh] overflow-scroll">
+      <div className="centered-container py-8">
+        <SearchBar
+          onSearch={handleSearch}
+          placeholder="Ask a question..."
+          customCssClasses={{ searchBarContainer: "my-4" }}
+        />
+      </div>
+
       <section className={cn("flex flex-col gap-10", !hasSearched && "hidden")}>
         <AiAnswer />
-        <SearchResultsSection />
-        <AnimatePresence>
-          {chatMode && (
-            <motion.div
-              className="fixed bottom-0 left-0 flex w-full items-center justify-center gap-4 border-t bg-white px-4 py-8 drop-shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              exit={{ opacity: 0, y: 20 }}
-            >
-              <Button
-                onClick={() => {
-                  chatActions.setMessages(messages.slice(0, 2));
-                  setChatMode(false);
-                  window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-                }}
+        <div className="centered-container">
+          <SearchResults
+            results={
+              results && results.flatMap((obj) => obj.results).slice(0, 9)
+            }
+          />
+          <AnimatePresence>
+            {chatMode && (
+              <motion.div
+                className="fixed bottom-0 left-0 flex w-full items-center justify-center gap-4 border-t bg-white px-4 py-8 drop-shadow-lg"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                exit={{ opacity: 0, y: 20 }}
               >
-                Reset
-              </Button>
-              <ChatInput
-                sendButtonIcon={<BsSend className="text-gray-900" />}
-                customCssClasses={{
-                  container: " w-full lg:w-1/2 resize-none",
-                  sendButton: "right-2 top-5",
-                }}
-                inputAutoFocus={true}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+                <Button
+                  onClick={() => {
+                    chatActions.setMessages(messages.slice(0, 2));
+                    setChatMode(false);
+                    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+                  }}
+                >
+                  Reset
+                </Button>
+                <ChatInput
+                  sendButtonIcon={<BsSend className="text-gray-900" />}
+                  customCssClasses={{
+                    container: " w-full lg:w-1/2 resize-none",
+                    sendButton: "right-2 top-5",
+                  }}
+                  inputAutoFocus={true}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </section>
     </div>
   );
