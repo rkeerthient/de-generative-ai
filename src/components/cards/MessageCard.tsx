@@ -122,6 +122,7 @@ const MessageCard = ({ message, idx }: MessageCardProps) => {
               <ReactMarkdown className="prose-sm w-full list-disc text-left mb-4">
                 {cleanAnswer}
               </ReactMarkdown>
+              <p className="my-2 text-base italic underline">Sources:</p>
               <SourcesHP sources={sourcesArray} />
             </>
 

@@ -72,6 +72,7 @@ function Inner() {
   const [results, setResults] = useState<VerticalResults[]>([]);
   const isLoading =
     useChatState((state) => state.conversation.isLoading) || false;
+
   const handleSearch: onSearchFunc = (searchEventData) => {
     const { query } = searchEventData;
     if (query) {
@@ -93,12 +94,21 @@ function Inner() {
   };
 
   useEffect(() => {
-    chatMode
+    chatMode === true
       ? chatActions.setContext({})
       : chatActions.setContext({
           userId: "1234",
           businessId: "3472542",
         });
+
+    // if (chatMode === true) {
+    //   chatActions.setContext({});
+    // } else {
+    //   chatActions.setContext({
+    //     userId: "1234",
+    //     businessId: "3472542",
+    //   });
+    // }
   }, [chatMode]);
 
   return (
