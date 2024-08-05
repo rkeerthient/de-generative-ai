@@ -20,7 +20,7 @@ import {
 } from "@yext/search-headless-react";
 import { SearchBar, onSearchFunc } from "@yext/search-ui-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsArrowLeft, BsSend } from "react-icons/bs";
 import AiAnswer from "../components/AiAnswer";
 import { Button } from "../components/Button";
@@ -74,7 +74,8 @@ function Inner() {
   const { chatMode, setChatMode } = useChatModeContext();
   const messages = useChatState((s) => s.conversation.messages);
   const [results, setResults] = useState<VerticalResults[]>([]);
-
+  const isLoading =
+    useChatState((state) => state.conversation.isLoading) || false;
   const handleSearch: onSearchFunc = (searchEventData) => {
     const { query } = searchEventData;
     if (query) {
@@ -95,6 +96,15 @@ function Inner() {
     }
     history.pushState(null, "", "?" + queryParams.toString());
   };
+
+  useEffect(() => {
+    chatMode
+      ? chatActions.setContext({})
+      : chatActions.setContext({
+          userId: "1234",
+          businessId: "3472542",
+        });
+  }, [chatMode]);
 
   return (
     <>
@@ -153,14 +163,15 @@ function Inner() {
                     messagesScrollContainer: "shadow-none my-0 w-full p-6 ",
                     messageBubbleCssClasses: {
                       bubble__user:
-                        "bg-none text-sm max-w-3/4 bg-[#0a3366] p-4",
-                      bubble__bot: "bg-none text-sm w-3/4 bg-[#e3eefc] p-4",
+                        "prose-sm bg-none text-sm max-w-3/4 bg-[#0a3366] p-4",
+                      bubble__bot:
+                        "prose-sm bg-none text-sm w-3/4 bg-[#e3eefc] p-4",
                     },
                     messagesContainer: `h-[80vh] overflow-scroll`,
                   }}
                 />
                 <motion.div
-                  className="fixed bottom-0 left-0 flex w-full items-center justify-center gap-4 border-t bg-white px-4 py-8 drop-shadow-lg"
+                  className={`fixed bottom-0 left-0 flex w-full items-center justify-center gap-4 border-t bg-white px-4 py-8 drop-shadow-lg ${isLoading && `!opacity-50 pointer-events-none`}`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
@@ -176,9 +187,19 @@ function Inner() {
                     Reset
                   </Button>
                   <ChatInput
-                    sendButtonIcon={<BsSend className="text-gray-900" />}
+                    sendButtonIcon={
+                      isLoading ? (
+                        <div className="!-mt-[0.75em] inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] text-[#0a3366]">
+                          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                            Loading...
+                          </span>
+                        </div>
+                      ) : (
+                        <BsSend className="text-gray-900" />
+                      )
+                    }
                     customCssClasses={{
-                      container: " w-full lg:w-1/2 resize-none",
+                      container: `w-full lg:w-1/2 resize-none`,
                       sendButton: "right-2 top-5",
                     }}
                     inputAutoFocus={true}
