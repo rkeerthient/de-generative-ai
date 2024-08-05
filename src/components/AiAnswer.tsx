@@ -45,7 +45,7 @@ export default function AiAnswer() {
           {Array.from({ length: 4 }).map((_, index) => (
             <motion.div
               key={`bigdiv-${index}`}
-              className={cn(" h-4 w-full overflow-hidden px-10 ")}
+              className={cn(" h-4 w-full overflow-scroll px-10 ")}
             >
               <motion.div
                 key={`lildiv-${index}`}
@@ -84,7 +84,7 @@ export default function AiAnswer() {
             {messages.slice(2).map((m, idx) => {
               return (
                 <>
-                   <MessageCard message={m} idx={idx} key={m.responseId} />{" "}
+                  <MessageCard message={m} idx={idx} key={m.responseId} />{" "}
                   <FollowUpButton />
                 </>
               );

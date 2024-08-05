@@ -87,7 +87,7 @@ function Inner() {
   };
 
   return (
-    <div>
+    <>
       {!chatMode && (
         <div className="centered-container py-8">
           <SearchBar
@@ -172,16 +172,18 @@ function Inner() {
           )}
         </AnimatePresence>
       </section>
-    </div>
+    </>
   );
 }
 
 const GenerativeAI = ({ document }: TemplateProps) => {
+  console.log(JSON.stringify(document));
+
   const { _site } = document;
   const { c_header, c_footer } = _site;
 
   return (
-    <>
+    <div className="h-screen">
       <SearchHeadlessProvider searcher={searcher}>
         <ChatHeadlessProvider config={chatConfig}>
           <ChatModeContextProvider>
@@ -193,7 +195,7 @@ const GenerativeAI = ({ document }: TemplateProps) => {
           </ChatModeContextProvider>
         </ChatHeadlessProvider>
       </SearchHeadlessProvider>
-    </>
+    </div>
   );
 };
 
