@@ -80,9 +80,10 @@ function Inner() {
     if (query) {
       setHasSearched(true);
       searchActions.setUniversalLimit(universalLimits);
-      searchActions
-        .executeUniversalQuery()
-        .then((res) => res && setResults(res.verticalResults));
+      searchActions.executeUniversalQuery().then((res) => {
+        res && setResults(res.verticalResults);
+        console.log(JSON.stringify(res));
+      });
       chatActions.restartConversation();
       chatActions.getNextMessage(query);
     }

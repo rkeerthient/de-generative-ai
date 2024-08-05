@@ -38,6 +38,7 @@ const MessageCard = ({ message, idx }: MessageCardProps) => {
         .find((result) => result.rawData.uid === i);
       return source;
     });
+  console.log(JSON.stringify(sourcesArray));
 
   const { setShowToast } = useChatModeContext();
   const [selectedThumb, setSelectedThumb] = useState("");
@@ -132,7 +133,9 @@ export const SourcesHP = ({ sources }: any) => {
           <a
             key={i}
             href={
-              source?.rawData?.c_file?.url || source?.rawData?.landingPageUrl
+              source?.rawData?.c_file?.url ||
+              source?.rawData?.landingPageUrl ||
+              source?.rawData?.c_primaryCTA?.link
             }
             target="_blank"
             rel="noreferrer"
