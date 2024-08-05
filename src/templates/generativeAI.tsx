@@ -65,6 +65,7 @@ function Inner() {
   const { chatMode, setChatMode } = useChatModeContext();
   const messages = useChatState((s) => s.conversation.messages);
   const [results, setResults] = useState<VerticalResults[]>([]);
+
   const handleSearch: onSearchFunc = (searchEventData) => {
     const { query } = searchEventData;
     if (query) {
