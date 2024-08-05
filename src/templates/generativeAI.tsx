@@ -62,11 +62,7 @@ export const getHeadConfig: GetHeadConfig<
 };
 
 const searcher = provideHeadless(searchConfig);
-const universalLimits = {
-  help_articles: 8,
-  products: 8,
-  locations: 8,
-};
+
 function Inner() {
   const searchActions = useSearchActions();
   const chatActions = useChatActions();
@@ -80,7 +76,6 @@ function Inner() {
     const { query } = searchEventData;
     if (query) {
       setHasSearched(true);
-      searchActions.setUniversalLimit(universalLimits);
       searchActions.executeUniversalQuery().then((res) => {
         res && setResults(res.verticalResults);
       });
