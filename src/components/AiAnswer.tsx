@@ -1,12 +1,11 @@
 import { useChatState } from "@yext/chat-headless-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { FaMagic } from "react-icons/fa";
 import { useChatModeContext } from "../hooks";
 import { cn } from "../utils/cn";
 import MessageCard from "./cards/MessageCard";
 import { Bars } from "react-loading-icons";
-import FollowUpButton from "./FollowUpButton";
 
 export default function AiAnswer() {
   const messages = useChatState((s) => s.conversation.messages);
@@ -71,35 +70,6 @@ export default function AiAnswer() {
       {firstBotMessage && chatGoal !== "NO_GOAL" && (
         <MessageCard message={firstBotMessage} idx={0} initial={true} />
       )}
-      <AnimatePresence>
-        {firstBotMessage && chatMode && (
-          <motion.ul
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="flex flex-col gap-8 "
-            id="chatbox"
-          >
-            {messages.slice(2).map((m, idx) => {
-              return (
-                <>
-                  <MessageCard message={m} idx={idx} key={m.responseId} />{" "}
-                  <FollowUpButton />
-                </>
-              );
-            })}
-
-            {isLoading && (
-              <li className="flex py-2 transition-all ">
-                <span className="circle animate-loader"></span>
-                <span className="circle animation-delay-200 animate-loader"></span>
-                <span className="circle animation-delay-400 animate-loader"></span>
-              </li>
-            )}
-          </motion.ul>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

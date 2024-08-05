@@ -82,7 +82,6 @@ function Inner() {
       searchActions.setUniversalLimit(universalLimits);
       searchActions.executeUniversalQuery().then((res) => {
         res && setResults(res.verticalResults);
-        console.log(JSON.stringify(res));
       });
       chatActions.restartConversation();
       chatActions.getNextMessage(query);
@@ -109,7 +108,13 @@ function Inner() {
         </div>
       )}
 
-      <section className={cn("flex flex-col gap-10", !hasSearched && "hidden")}>
+      <section
+        className={cn(
+          "flex flex-col gap-10",
+          !hasSearched && "hidden",
+          chatMode && `absolute h-screen top-0`
+        )}
+      >
         {!chatMode && (
           <>
             <AiAnswer />
@@ -120,35 +125,7 @@ function Inner() {
             />
           </>
         )}
-        <AnimatePresence>
-          {chatMode && (
-            <motion.div
-              className="fixed bottom-0 left-0 flex w-full items-center justify-center gap-4 border-t bg-white px-4 py-8 drop-shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              exit={{ opacity: 0, y: 20 }}
-            >
-              <Button
-                onClick={() => {
-                  chatActions.setMessages(messages.slice(0, 2));
-                  setChatMode(false);
-                  window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-                }}
-              >
-                Reset
-              </Button>
-              <ChatInput
-                sendButtonIcon={<BsSend className="text-gray-900" />}
-                customCssClasses={{
-                  container: " w-full lg:w-1/2 resize-none",
-                  sendButton: "right-2 top-5",
-                }}
-                inputAutoFocus={true}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+
         <AnimatePresence>
           {chatMode && (
             <motion.div
@@ -157,9 +134,9 @@ function Inner() {
               animate={{ y: 0 }}
               exit={{ y: "100vh" }}
               transition={{ duration: 0.3 }}
-              className="flex w-full h-full absolute top-0 right-0 object-cover bg-white z-100"
+              className="flex w-full h-screen top-0 right-0 object-cover bg-white z-100"
             >
-              <div className="w-full h-full shrink-0 relative">
+              <div className="w-full h-screen shrink-0 relative">
                 <button
                   className="z-50 absolute top-0 left-8 mt-4 mr-4 text-[#0a3366] bg-white shadow rounded-full px-4 py-2"
                   onClick={() => {
@@ -170,14 +147,43 @@ function Inner() {
                   Back to Search
                 </button>
                 <ChatPanel
+                  showFeedbackButtons={true}
                   customCssClasses={{
-                    container: "shadow-none my-0 w-full p-6",
+                    inputContainer: "hidden",
+                    messagesScrollContainer: "shadow-none my-0 w-full p-6 ",
                     messageBubbleCssClasses: {
-                      bubble__user: "bg-none bg-[#0a3366]  p-4",
-                      bubble__bot: "bg-none bg-[#e3eefc]  zp-4",
+                      bubble__user:
+                        "bg-none text-sm max-w-3/4 bg-[#0a3366] p-4",
+                      bubble__bot: "bg-none text-sm w-3/4 bg-[#e3eefc] p-4",
                     },
+                    messagesContainer: `h-[80vh] overflow-scroll`,
                   }}
                 />
+                <motion.div
+                  className="fixed bottom-0 left-0 flex w-full items-center justify-center gap-4 border-t bg-white px-4 py-8 drop-shadow-lg"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  exit={{ opacity: 0, y: 20 }}
+                >
+                  <Button
+                    onClick={() => {
+                      chatActions.setMessages(messages.slice(0, 2));
+                      setChatMode(false);
+                      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+                    }}
+                  >
+                    Reset
+                  </Button>
+                  <ChatInput
+                    sendButtonIcon={<BsSend className="text-gray-900" />}
+                    customCssClasses={{
+                      container: " w-full lg:w-1/2 resize-none",
+                      sendButton: "right-2 top-5",
+                    }}
+                    inputAutoFocus={true}
+                  />
+                </motion.div>
               </div>
             </motion.div>
           )}

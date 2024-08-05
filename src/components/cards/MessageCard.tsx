@@ -38,7 +38,6 @@ const MessageCard = ({ message, idx }: MessageCardProps) => {
         .find((result) => result.rawData.uid === i);
       return source;
     });
-  console.log(JSON.stringify(sourcesArray));
 
   const { setShowToast } = useChatModeContext();
   const [selectedThumb, setSelectedThumb] = useState("");
