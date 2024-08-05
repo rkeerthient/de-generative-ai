@@ -16,7 +16,6 @@ export default function AiAnswer() {
   const chatGoal = useChatState(
     (state) => state.conversation.notes?.currentGoal
   );
-  console.log(JSON.stringify(messages));
 
   useEffect(() => {
     const chatbox = document.getElementById("results");

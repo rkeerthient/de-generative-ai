@@ -36,6 +36,15 @@ import { cn } from "../utils/cn";
 const chatConfig: ChatHeadlessConfig = {
   apiKey: import.meta.env.YEXT_PUBLIC_CHAT_APIKEY,
   botId: import.meta.env.YEXT_PUBLIC_CHAT_BOTID,
+  analyticsConfig: {
+    endpoint:
+      import.meta.env.YEXT_PUBLIC_ACCOUNTTYPE === "PROD"
+        ? "https://us.yextevents.com/accounts/me/events"
+        : "https://sbx.us.yextevents.com/accounts/me/events",
+    baseEventPayload: {
+      internalUser: true,
+    },
+  },
 };
 
 export const getPath: GetPath<TemplateProps> = () => {
@@ -178,8 +187,6 @@ function Inner() {
 }
 
 const GenerativeAI = ({ document }: TemplateProps) => {
-  console.log(JSON.stringify(document));
-
   const { _site } = document;
   const { c_header, c_footer } = _site;
 
