@@ -5,13 +5,13 @@ import {
   useChatActions,
   useChatState,
 } from "@yext/chat-headless-react";
-import { cn } from "../../utils/cn";
+import { cn } from "../utils/cn";
 import { HandThumbDownIcon, HandThumbUpIcon } from "@heroicons/react/20/solid";
 import { useCallback, useState } from "react";
-import { useChatModeContext } from "../../hooks";
-import FollowUpButton from "../FollowUpButton";
+import { useChatModeContext } from "../hooks";
+import FollowUpButton from "./FollowUpButton";
 import { useSearchState } from "@yext/search-headless-react";
-import { sanitizeCitations } from "../../utils/sanitizeCitations";
+import { sanitizeCitations } from "../utils/sanitizeCitations";
 
 interface MessageCardProps {
   message: Message;
@@ -123,7 +123,7 @@ const MessageCard = ({ message, idx }: MessageCardProps) => {
                 {cleanAnswer}
               </ReactMarkdown>
               <p className="my-2 text-base italic underline">Sources:</p>
-              <SourcesHP sources={sourcesArray} />
+              <Sources sources={sourcesArray} />
             </>
 
             <FollowUpButton />
@@ -135,40 +135,38 @@ const MessageCard = ({ message, idx }: MessageCardProps) => {
 };
 
 export default MessageCard;
-export const SourcesHP = ({ sources }: any) => {
+
+export const Sources = ({ sources }: any) => {
+  console.log(JSON.stringify(sources));
+
   const uniqueSources = sources.reduce((accumulator: any, current: any) => {
     if (!accumulator.find((item: any) => item?.id == current?.id)) {
       accumulator.push(current);
     }
     return accumulator;
   }, []);
+  console.log(JSON.stringify(uniqueSources));
+
   return (
     <section className="flex gap-2 flex-wrap mb-4">
       {uniqueSources.map((source: any, i: any) => {
+        if (!source?.rawData?.name) return null;
+
+        const href =
+          source?.rawData?.c_file?.url ||
+          source?.rawData?.landingPageUrl ||
+          (source?.rawData?.c_primaryCTA?.type === "URL" &&
+            source?.rawData?.c_primaryCTA?.link) ||
+          "#";
+
         return (
-          <>
-            {source?.rawData.name && (
-              <a
-                key={i}
-                href={
-                  source?.rawData?.c_file?.url ||
-                  source?.rawData?.landingPageUrl ||
-                  source?.rawData?.c_primaryCTA?.link
-                }
-                target="_blank"
-                rel="noreferrer"
-              >
-                <div
-                  key={i}
-                  className="bg-white rounded-md p-2 w-48 flex gap-2 hover:bg-[#0a3366] hover:text-white hover:cursor-pointer text-[#0a3366] transition ease-linear h-full"
-                >
-                  <p className="text-sm text-semibold line-clamp-4">
-                    {source?.rawData.name}
-                  </p>
-                </div>
-              </a>
-            )}
-          </>
+          <a key={i} href={href} target="_blank" rel="noreferrer">
+            <div className="bg-white rounded-md p-2 w-48 flex gap-2 hover:bg-[#0a3366] hover:text-white hover:cursor-pointer text-[#0a3366] transition ease-linear h-full">
+              <p className="text-sm text-semibold line-clamp-4">
+                {source?.rawData.name}
+              </p>
+            </div>
+          </a>
         );
       })}
     </section>

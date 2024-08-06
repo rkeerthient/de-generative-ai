@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { FaMagic } from "react-icons/fa";
 import { useChatModeContext } from "../hooks";
 import { cn } from "../utils/cn";
-import MessageCard from "./cards/MessageCard";
+import MessageCard from "./MessageCard";
 import { Bars } from "react-loading-icons";
 
 export default function AiAnswer() {
