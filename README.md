@@ -24,7 +24,7 @@
 
 ### Testing it locally (_Do this step only if you want to test it locally before deploying_)
 
-- open the .env file and update the details.
+- open the `.env` file and update the details.
 - These can be found in search config and chat config sections in account.
 - Do a `npm i` followed by `npm run dev`. This will run the file locally to preview.
 - Once we are good with the things, push the package to your github.
