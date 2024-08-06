@@ -22,7 +22,7 @@
 
   ![Yaml Config](/docImages/yamlconfig.png)
 
-### Testing it locally
+### Testing it locally (_Do this step only if you want to test it locally before deploying_)
 
 - open the .env file and update the details.
 - These can be found in search config and chat config sections in account.
