@@ -137,15 +137,12 @@ const MessageCard = ({ message, idx }: MessageCardProps) => {
 export default MessageCard;
 
 export const Sources = ({ sources }: any) => {
-  console.log(JSON.stringify(sources));
-
   const uniqueSources = sources.reduce((accumulator: any, current: any) => {
     if (!accumulator.find((item: any) => item?.id == current?.id)) {
       accumulator.push(current);
     }
     return accumulator;
   }, []);
-  console.log(JSON.stringify(uniqueSources));
 
   return (
     <section className="flex gap-2 flex-wrap mb-4">
