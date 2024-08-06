@@ -157,7 +157,7 @@ export const Sources = ({ sources }: any) => {
           source?.rawData?.landingPageUrl ||
           (source?.rawData?.c_primaryCTA?.type === "URL" &&
             source?.rawData?.c_primaryCTA?.link) ||
-          "#";
+          "Yext.com";
 
         return (
           <a key={i} href={href} target="_blank" rel="noreferrer">
